@@ -33,7 +33,7 @@ contract ProofOfExistence {
         state = _state;
         pincode = _pincode;
         pdflink = _pdflink;
-        deadline = block.timestamp + 60; //Time is in seconds, deadline is 2hours.
+        deadline = block.timestamp + 7200; //Time is in seconds, deadline is 2hours.
         status = "Requested";
         states = StateType.Requested;
     }
@@ -84,14 +84,14 @@ contract ProofOfExistence {
     
     function Terminate() public canSee{
         require(block.timestamp <= deadline);
-        if (states==StateType.Successful || states==StateType.Rejected)
+        if (states==StateType.Successful || states==StateType.Rejected || block.timestamp==deadline)
         {
-            owner = 0xdD870fA1b7C4700F2BD7f44238821C26f7392148;
-            verifier = 0xdD870fA1b7C4700F2BD7f44238821C26f7392148;
+            owner = address(0);
+            verifier = address(0);
             status = "Terminated";
             states = StateType.Terminated;
         }
         
-    }   
+    }
     
 }
